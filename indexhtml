@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Integrales</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    #container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #resultado {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e7f3fe;
+      border: 1px solid #2196F3;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Calculadora de Integrales</h1>
+    <input type="text" id="funcion" placeholder="Ejemplo: x^2" />
+    <button onclick="resolverIntegral()">Resolver Integral</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    async function resolverIntegral() {
+      const funcion = document.getElementById('funcion').value;
+      if (!funcion) {
+        document.getElementById('resultado').innerText = "Por favor, escribe una función.";
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.mathjs.org/v4/?expr=integrate(${encodeURIComponent(funcion)}, x)`);
+        const integral = await res.text();
+        document.getElementById('resultado').innerText = `∫ ${funcion} dx = ${integral} + C`;
+      } catch (error) {
+        document.getElementById('resultado').innerText = "Error al calcular la integral.";
+      }
+    }
+  </script>
+</body>
+</html>
